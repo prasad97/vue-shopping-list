@@ -11,8 +11,8 @@
         <h1>{{header.toLocaleUpperCase()}}</h1>
         <div class="add-item-form">
             <!-- shorthand for v-on: is @ -->
-            <input type="text" v-model="newItem" placeholder="Add an Item" @keyup.enter="items.push(newItem)">
-            <button class="btn btn-primary" @click="items.push(newItem)">Save</button>
+            <input type="text" v-model="newItem" placeholder="Add an Item" @keyup.enter="saveItem">
+            <button class="btn btn-primary" @click="saveItem">Save</button>
         </div>
         
         <ul>
@@ -33,6 +33,12 @@
                     "Potato",
                     "Milk"
                 ]
+            },
+            methods: {
+                saveItem : function(){
+                    this.items.push(this.newItem);
+                    this.newItem = "";
+                }
             }
         });
     </script>
