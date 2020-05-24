@@ -16,11 +16,12 @@
         <div v-if="state==='edit'" class="add-item-form">
             <!-- shorthand for v-on: is @ -->
             <input type="text" v-model="newItem" placeholder="Add an Item" @keyup.enter="saveItem">
-            <button class="btn btn-primary" @click="saveItem">Save</button>
+            <!-- shorthand for v-bind is : -->
+            <button class="btn btn-primary" @click="saveItem" :disabled="newItem.length===0">Save</button>
         </div>
         
         <ul>
-            <li v-for="item in items">{{item}}</li>
+            <li v-for="item in items" :class="[item.purchased ? 'strikeout' : '', item.highPriority ? 'priority' : '']" @click = "togglePurchase(item)">{{item.label}}</li>
             <p v-if="items.length === 0">Nice! you have bought all the items.</p>
         </ul>
     </div>
@@ -34,20 +35,38 @@
                 header:"Shopping List App",
                 newItem: "",
                 items:[
-                    // "Tomatoes",
-                    // "Coriander",
-                    // "Potato",
-                    // "Milk"
+                    {
+                        label:"Tomatoes",
+                        purchased:false,
+                        highPriority:false,
+                    },
+                    {
+                        label:"Coriander",
+                        purchased:true,
+                        highPriority:false,
+                    },
+                    {
+                        label:"Potato",
+                        purchased:false,
+                        highPriority:true,
+                    },
                 ]
             },
             methods: {
                 saveItem : function(){
-                    this.items.push(this.newItem);
+                    this.items.push({
+                        label:this.newItem,
+                        purchased:false,
+                        highPriority:false,
+                    },);
                     this.newItem = "";
                 },
                 changeState : function(newState){
                     this.state = newState;
                     this.newItem = "";
+                },
+                togglePurchase:function(item){
+                    item.purchased = !item.purchased;
                 }
             }
         });
