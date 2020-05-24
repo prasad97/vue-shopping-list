@@ -8,8 +8,12 @@
 </head>
 <body>
     <div id="shopping-list">
-        <h1>{{header.toLocaleUpperCase()}}</h1>
-        <div class="add-item-form">
+        <div class="header">
+            <h1>{{header.toLocaleUpperCase()}}</h1>
+            <button v-if="state==='default'" @click="changeState('edit')" class="btn btn-primary">Add Item</button>
+            <button v-else @click="changeState('default')" class="btn btn-cancel">Cancel</button>
+        </div>
+        <div v-if="state==='edit'" class="add-item-form">
             <!-- shorthand for v-on: is @ -->
             <input type="text" v-model="newItem" placeholder="Add an Item" @keyup.enter="saveItem">
             <button class="btn btn-primary" @click="saveItem">Save</button>
@@ -17,6 +21,7 @@
         
         <ul>
             <li v-for="item in items">{{item}}</li>
+            <p v-if="items.length === 0">Nice! you have bought all the items.</p>
         </ul>
     </div>
 
@@ -25,18 +30,23 @@
         var shoppingList = new Vue({
             el : "#shopping-list",
             data:{
+                state:"default",
                 header:"Shopping List App",
                 newItem: "",
                 items:[
-                    "Tomatoes",
-                    "Coriander",
-                    "Potato",
-                    "Milk"
+                    // "Tomatoes",
+                    // "Coriander",
+                    // "Potato",
+                    // "Milk"
                 ]
             },
             methods: {
                 saveItem : function(){
                     this.items.push(this.newItem);
+                    this.newItem = "";
+                },
+                changeState : function(newState){
+                    this.state = newState;
                     this.newItem = "";
                 }
             }
